@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import {
   ArrowRight,
-  BookOpen,
   CircleHelp,
   Globe,
   Monitor,
@@ -18,11 +17,6 @@ const HINTS = [
     icon: Terminal,
     label: "Terminal icon",
     text: "Backend Log. Shows what would happen on the backend in production. Helps understand processes and business logic.",
-  },
-  {
-    icon: BookOpen,
-    label: "Book icon",
-    text: "Opens the related business requirements section for the current screen.",
   },
 ];
 
@@ -74,7 +68,7 @@ export function HomePage() {
             <div>
               <h2 className="mb-2 text-lg font-semibold text-foreground">About this demo</h2>
               <p className="text-sm text-muted-foreground">
-                27 interactive screens covering the full IsshoLife platform: area-based event discovery,
+                28 interactive screens covering the full IsshoLife platform: area-based event discovery,
                 join and coordination flows, ride sharing, stay booking via Trust integration,
                 partner dashboards, and admin operations.
               </p>
@@ -87,7 +81,7 @@ export function HomePage() {
           </div>
         </div>
 
-        <div className="mt-4 grid gap-4 md:grid-cols-3">
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
           {HINTS.map((hint) => (
             <div
               key={hint.label}
