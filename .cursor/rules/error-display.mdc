@@ -1,0 +1,34 @@
+---
+description: How to display errors to users in the UI
+globs: **/*.tsx
+alwaysApply: false
+---
+
+# Error Display Rules
+
+Never show raw error messages to users — they may contain technical details.
+
+## Rules
+
+1. **UI**: Show a short, friendly message (e.g. "Something went wrong. Please try again.")
+2. **Console**: Always log the actual error via `console.error` for debugging.
+3. **Never** pass `error.message` or similar into toasts, alerts, or any visible UI text.
+
+## Example
+
+```tsx
+// ❌ BAD — exposes technical error to user
+try {
+  await submitForm(data);
+} catch (error) {
+  toast.error(error.message);
+}
+
+// ✅ GOOD — friendly message + console log
+try {
+  await submitForm(data);
+} catch (error) {
+  console.error("Failed to submit form:", error);
+  toast.error("Something went wrong. Please try again.");
+}
+```

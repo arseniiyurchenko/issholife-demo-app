@@ -1,0 +1,113 @@
+---
+description: React component conventions — structure, naming, exports, props, memoization
+globs: **/*.tsx
+alwaysApply: false
+---
+
+# React Component Rules
+
+## Component Declaration
+
+Use **full function declarations**. Arrow functions for components are forbidden.
+
+```tsx
+// ❌ BAD
+const UserProfile = () => { ... };
+const UserProfile = (props: Props) => { ... };
+export const UserProfile: FC<Props> = () => { ... };
+
+// ✅ GOOD
+export function UserProfile() { ... }
+export function UserProfile(props: Props) { ... }
+```
+
+## Naming
+
+Component names must be descriptive and unambiguous. If a component is used inside another, add a clear prefix.
+
+```tsx
+// ❌ BAD — unclear what "Item" belongs to
+function Item(props: Props) { ... }
+
+// ✅ GOOD — explicit context
+function OrderListItem(props: Props) { ... }
+function OrderListHeader(props: Props) { ... }
+```
+
+## Exports
+
+Default exports are forbidden. Always use named exports.
+
+```tsx
+// ❌ BAD
+export default function UserProfile() { ... }
+
+// ✅ GOOD
+export function UserProfile() { ... }
+```
+
+## Props
+
+Declare props as `interface Props`. Do not prefix the interface with the component name.
+
+```tsx
+// ❌ BAD
+interface UserProfileProps { ... }
+type Props = { ... };
+
+// ✅ GOOD
+interface Props {
+  name: string;
+  age: number;
+}
+
+export function UserProfile(props: Props) { ... }
+```
+
+When the component accepts `children`, use `PropsWithChildren`:
+
+```tsx
+import { PropsWithChildren } from "react";
+
+// Only children — no extra props
+export function Layout(props: PropsWithChildren) { ... }
+
+// Children + other props
+interface Props extends PropsWithChildren {
+  title: string;
+}
+
+export function Layout(props: Props) { ... }
+```
+
+## One Component Per File
+
+Each component must live in its own file. Multiple exported components in a single file are forbidden.
+
+## Memoization
+
+Use `useMemo` for expensive computations and derived data. Use `useCallback` for callback functions passed to child components.
+
+```tsx
+// ❌ BAD — recalculates on every render
+const sorted = items.sort((a, b) => a.name.localeCompare(b.name));
+
+// ✅ GOOD
+const sorted = useMemo(
+  () => [...items].sort((a, b) => a.name.localeCompare(b.name)),
+  [items],
+);
+
+// ❌ BAD — new function reference on every render
+<ChildComponent onClick={() => handleClick(id)} />;
+
+// ✅ GOOD
+const handleItemClick = useCallback(() => handleClick(id), [id]);
+<ChildComponent onClick={handleItemClick} />;
+```
+
+## Code Quality
+
+- No hacks, workarounds, or TODO-driven code. Write clean, maintainable solutions.
+- Avoid `any`. Use proper TypeScript types.
+- Avoid unnecessary `useEffect` — derive state from props/state where possible.

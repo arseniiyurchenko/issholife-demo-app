@@ -1,0 +1,69 @@
+# Right.Link Space Task Creation
+
+## When This Rule Applies
+
+This rule applies when the user asks to create a task in:
+
+- "Space"
+- "space"
+- "right.link space"
+- "Right.Link Space"
+- Or any similar variation referring to task management
+
+## Task Types
+
+### Bug Fix Task
+
+Use the bug template when the user describes:
+
+- A bug, error, or issue
+- Something that is broken or not working as expected
+- A fix needed for existing functionality
+
+Template location: `/.right.link/templates/bug.template.md`
+
+### Feature Task
+
+Use the feature/task template when the user describes:
+
+- A new feature or functionality
+- An enhancement or improvement
+- A new requirement or capability
+
+Template location: `/.right.link/templates/task.template.md`
+
+## Process
+
+1. **Identify Task Type**: Determine if this is a bug fix or a feature task based on the user's description
+2. **Transform Description**: Convert the user's brief description into the appropriate template format
+3. **Fill Template Sections**: Populate all relevant sections with information from the user's description
+4. **Generate Filename**: Create a descriptive kebab-case filename based on the task title
+5. **Save File**: Save the completed template as a `.md` file in `/.right.link/tasks/` folder
+
+## Output Requirements
+
+- All content MUST be written in English
+- Use clear, professional language
+- Fill in as many template sections as possible based on the provided information
+- Leave placeholder comments for sections that need more information
+- Filename format: `YYYY-MM-DD-task-title-in-kebab-case.md`
+
+## Example Workflow
+
+User: "Create a task in Space: users can't login with Google OAuth"
+
+Assistant actions:
+
+1. Identifies this as a bug (login not working)
+2. Uses bug template
+3. Fills in: Overview, Steps to Reproduce (if known), Expected vs Actual behavior
+4. Saves to: `/.right.link/tasks/2025-01-15-google-oauth-login-not-working.md`
+
+User: "Create a task in Space: add dark mode support"
+
+Assistant actions:
+
+1. Identifies this as a feature (new functionality)
+2. Uses feature/task template
+3. Fills in: Business Purpose, Requirements, Technical Details
+4. Saves to: `/.right.link/tasks/2025-01-15-add-dark-mode-support.md`

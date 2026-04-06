@@ -1,0 +1,23 @@
+---
+description: Prohibit adding dependencies to the project without explicit user approval
+alwaysApply: true
+---
+
+# No Adding Dependencies
+
+The assistant is **forbidden** from adding dependencies to the project on its own.
+
+## Rule
+
+If a task requires a new dependency:
+
+1. **Stop immediately** — do not continue working on the task.
+2. **Inform the user** which dependency is needed and why.
+3. **Wait for the user's explicit response** granting permission to proceed.
+4. Only after the user confirms — continue working.
+
+## Forbidden
+
+- Running `pnpm add`, `npm install`, `yarn add`, or similar commands.
+- Manually editing `package.json` to add new dependencies.
+- Sneaking in dependencies without stopping and notifying the user.

@@ -1,0 +1,24 @@
+---
+description: Prohibit adding shadcn components without explicit user action via CLI
+alwaysApply: true
+---
+
+# No Adding shadcn Components
+
+The assistant is **forbidden** from adding shadcn/ui components to the project on its own.
+
+## Rule
+
+If a task requires a shadcn component that doesn't exist yet in `src/modules/shadcn/components/ui/`:
+
+1. **Stop immediately** — do not continue working on the task.
+2. **Tell the user** which component is needed and provide the exact CLI command, e.g.:
+   `pnpm dlx shadcn@latest add button`
+3. **Wait for the user** to confirm that the component has been added.
+4. Only after the user confirms — continue working.
+
+## Forbidden
+
+- Running `pnpm dlx shadcn`, `npx shadcn`, or any shadcn CLI commands.
+- Manually creating or writing shadcn component files.
+- Copy-pasting shadcn component source code into the project.
