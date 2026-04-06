@@ -1,4 +1,5 @@
-import { Car, LockKeyhole } from "lucide-react";
+import { Car } from "lucide-react";
+import { useNavigate } from "react-router";
 import { useI18n } from "@/modules/core/i18n";
 import { ScreenHint } from "@/modules/core/components/ScreenHint";
 import { BackendHintButton } from "@/modules/core/components/BackendHintButton";
@@ -10,7 +11,19 @@ import { useIsshoLife } from "../issholife-context";
 
 export function RideSharePublicScreen() {
   const { t } = useI18n();
-  const { setIsPublic } = useIsshoLife();
+  const { isAuthenticated, requestUnlock, setIsPublic } = useIsshoLife();
+  const navigate = useNavigate();
+
+  const unlockRides = () => {
+    if (isAuthenticated) {
+      setIsPublic(false);
+      navigate("/screens/member/rideshare");
+      return;
+    }
+
+    requestUnlock("/screens/member/rideshare");
+    navigate("/screens/auth/sign-in");
+  };
 
   return (
     <IsshoLifeLayout showToggle={false}>
@@ -30,7 +43,7 @@ export function RideSharePublicScreen() {
           <div className="text-xs text-muted-foreground">{t("ride.ridesAvailable")}</div>
         </div>
 
-        <Lock isLocked label={t("ride.pool")} onUnlock={() => setIsPublic(false)}>
+        <Lock isLocked label={t("ride.pool")} onUnlock={unlockRides}>
           <div>
             {RIDES.map((r) => (
               <RidePoolCard key={r.id} ride={r} />

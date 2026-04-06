@@ -2,41 +2,41 @@ import { useNavigate } from "react-router";
 import { useI18n } from "@/modules/core/i18n";
 import { ScreenHint } from "@/modules/core/components/ScreenHint";
 import { BackendHintButton } from "@/modules/core/components/BackendHintButton";
-import { STAYS } from "@/modules/core/issholife-data";
 import { IsshoLifeLayout } from "../components/IsshoLifeLayout";
-import { StayCard } from "../components/StayCard";
+import { Lock } from "../components/Lock";
 import { useIsshoLife } from "../issholife-context";
 
-export function StayBrowsePublicScreen() {
+export function GoingPublicScreen() {
   const { t } = useI18n();
   const { isAuthenticated, requestUnlock, setIsPublic } = useIsshoLife();
   const navigate = useNavigate();
 
-  const unlockStay = () => {
+  function unlockGoing(): void {
     if (isAuthenticated) {
       setIsPublic(false);
-      navigate("/screens/member/stay");
+      navigate("/screens/member/going");
       return;
     }
 
-    requestUnlock("/screens/member/stay");
+    requestUnlock("/screens/member/going");
     navigate("/screens/auth/sign-in");
-  };
+  }
 
   return (
     <IsshoLifeLayout showToggle={false}>
       <div className="border-b bg-card px-4 py-3">
-        <h2 className="text-sm font-bold text-foreground">{t("feed.stay")}</h2>
-        <p className="mt-0.5 text-xs text-muted-foreground">{t("feed.stayDescription")}</p>
+        <h2 className="text-sm font-bold text-foreground">{t("feed.going")}</h2>
       </div>
       <div className="p-4">
-        {STAYS.map((s) => (
-          <StayCard key={s.id} stay={s} isLocked onUnlock={unlockStay} />
-        ))}
+        <Lock isLocked label={t("feed.going")} onUnlock={unlockGoing}>
+          <div className="py-16 text-center text-xs text-muted-foreground">
+            {t("join.unlockToJoin")}
+          </div>
+        </Lock>
       </div>
       <ScreenHint
-        title="Stay Browse (Public)"
-        description="Public view of accommodation listings with locked pricing. Powered by Trust network."
+        title="Going (Public)"
+        description="Public locked preview for Going. Unlock flows into member Going route."
       />
       <BackendHintButton />
     </IsshoLifeLayout>

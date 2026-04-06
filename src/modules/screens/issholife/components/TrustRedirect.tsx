@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft, CheckCircle } from "lucide-react";
 import { useI18n } from "@/modules/core/i18n";
+import { useBackendHints } from "@/modules/core/backend-hints";
 import type { Stay } from "@/modules/core/issholife-data";
 
 interface Props {
@@ -10,7 +11,9 @@ interface Props {
 
 export function TrustRedirect({ stay, onBack }: Props) {
   const { t } = useI18n();
+  const hints = useBackendHints();
   const [phase, setPhase] = useState<"loading" | "ready">("loading");
+  const [isRequestSubmitted, setIsRequestSubmitted] = useState(false);
 
   useEffect(() => {
     const tm = setTimeout(() => setPhase("ready"), 2000);
@@ -18,6 +21,15 @@ export function TrustRedirect({ stay, onBack }: Props) {
   }, []);
 
   const priceNum = parseInt(stay.price.replace(/[^0-9]/g, ""));
+
+  const handleRequestBooking = () => {
+    if (isRequestSubmitted) {
+      return;
+    }
+
+    setIsRequestSubmitted(true);
+    hints.push(`Trust booking request sent for stay ${stay.id}.`);
+  };
 
   if (phase === "loading") {
     return (
@@ -114,8 +126,16 @@ export function TrustRedirect({ stay, onBack }: Props) {
               &yen;{(priceNum * 2).toLocaleString()}
             </span>
           </div>
-          <button className="mt-4 w-full rounded-xl bg-gradient-to-r from-[var(--il-trust-gold)] to-[#E8A75C] py-3.5 text-sm font-bold text-[var(--il-trust-dark)]">
-            {t("stay.requestBooking")}
+          <button
+            onClick={handleRequestBooking}
+            disabled={isRequestSubmitted}
+            className="mt-4 w-full rounded-xl bg-gradient-to-r from-[var(--il-trust-gold)] to-[#E8A75C] py-3.5 text-sm font-bold text-[var(--il-trust-dark)] disabled:cursor-default disabled:opacity-70"
+          >
+            {isRequestSubmitted
+              ? t("lang") === "ja"
+                ? "リクエストを送信しました"
+                : "Request submitted"
+              : t("stay.requestBooking")}
           </button>
         </div>
       </div>

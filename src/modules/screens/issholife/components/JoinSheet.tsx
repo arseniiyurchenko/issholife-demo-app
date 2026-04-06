@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Bus, Car, PersonStanding, ShieldAlert } from "lucide-react";
+import { type ComponentType, useState } from "react";
+import { Bus, Car, Home, PersonStanding, ShieldAlert } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -7,22 +7,48 @@ import {
   SheetTitle,
 } from "@/modules/shadcn/components/ui/sheet";
 import { useI18n } from "@/modules/core/i18n";
-import type { Listing } from "@/modules/core/issholife-data";
+import { STAYS, type Listing, type Stay } from "@/modules/core/issholife-data";
+import type { JoinTransportKey } from "../issholife-context";
+import { TrustRedirect } from "./TrustRedirect";
 
 interface Props {
   listing: Listing;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: () => void;
+  onConfirm: (transport: JoinTransportKey) => void;
 }
 
 export function JoinSheet({ listing, open, onOpenChange, onConfirm }: Props) {
   const { t, lang } = useI18n();
-  const [transport, setTransport] = useState<string | null>(null);
+  const [transport, setTransport] = useState<JoinTransportKey | null>(null);
+  const [redirectStay, setRedirectStay] = useState<Stay | null>(null);
+  const [bookedStayId, setBookedStayId] = useState<number | null>(null);
 
   const title = lang === "ja" ? listing.titleJa : listing.title;
+  const stayRecommendations = STAYS.filter((stay) => stay.area === listing.area);
+  const recommendedStays =
+    stayRecommendations.length > 0 ? stayRecommendations : STAYS.slice(0, 2);
 
-  const options: { key: string; label: string; sub: string; icon: React.ElementType }[] = [];
+  if (redirectStay) {
+    return (
+      <div className="fixed inset-0 z-[120] bg-background">
+        <TrustRedirect
+          stay={redirectStay}
+          onBack={() => {
+            setBookedStayId(redirectStay.id);
+            setRedirectStay(null);
+          }}
+        />
+      </div>
+    );
+  }
+
+  const options: {
+    key: JoinTransportKey;
+    label: string;
+    sub: string;
+    icon: ComponentType<{ className?: string }>;
+  }[] = [];
   if (listing.transport === "organizer") {
     options.push({
       key: "org",
@@ -89,19 +115,64 @@ export function JoinSheet({ listing, open, onOpenChange, onConfirm }: Props) {
             );
           })}
 
-          <button
-            onClick={() => {
-              if (transport) onConfirm();
-            }}
-            disabled={!transport}
-            className={`mt-4 w-full rounded-lg py-3 text-sm font-bold transition-colors ${
-              transport
-                ? "bg-[var(--il-accent)] text-white"
-                : "bg-muted text-muted-foreground"
-            }`}
-          >
-            {t("join.confirm")}
-          </button>
+          {transport && (
+            <div className="mt-4 rounded-xl border bg-muted/40 p-3">
+              <div className="mb-2 flex items-center gap-1.5 text-xs font-bold text-foreground">
+                <Home className="size-3.5 text-[var(--il-accent)]" />
+                Stay near this event
+              </div>
+              <div className="space-y-2">
+                {recommendedStays.slice(0, 2).map((stay) => (
+                  <button
+                    key={stay.id}
+                    type="button"
+                    onClick={() => setRedirectStay(stay)}
+                    className="flex w-full items-center justify-between rounded-lg border bg-background px-2.5 py-2 text-left"
+                  >
+                    <div>
+                      <div className="text-xs font-semibold text-foreground">
+                        {stay.title}
+                      </div>
+                      <div className="text-[11px] text-muted-foreground">
+                        {stay.area} · {stay.rating}★
+                      </div>
+                    </div>
+                    <div className="text-[11px] font-bold text-[var(--il-accent)]">
+                      {stay.price}
+                    </div>
+                  </button>
+                ))}
+              </div>
+              {bookedStayId && (
+                <div className="mt-2 rounded-lg bg-[var(--il-going-bg)] px-3 py-2 text-center text-[11px] font-semibold text-[var(--il-going)]">
+                  Stay booking flow completed on Trust. Continue below to finish joining.
+                </div>
+              )}
+              <button
+                type="button"
+                onClick={() => onConfirm(transport)}
+                className="mt-3 w-full rounded-lg bg-[var(--il-accent)] py-2.5 text-xs font-bold text-white transition-colors"
+              >
+                Continue with join
+              </button>
+              <button
+                type="button"
+                onClick={() => onConfirm(transport)}
+                className="mt-1.5 w-full rounded-lg border bg-background py-2.5 text-xs font-semibold text-foreground transition-colors"
+              >
+                Skip for now
+              </button>
+              <div className="mt-1.5 text-center text-[11px] text-muted-foreground">
+                You can book a stay later in the Trust tab.
+              </div>
+            </div>
+          )}
+
+          {!transport && (
+            <div className="mt-4 rounded-lg bg-muted px-3 py-2 text-center text-xs text-muted-foreground">
+              Choose transport to continue.
+            </div>
+          )}
 
           <div className="mt-3 flex items-center justify-center gap-1.5 rounded-lg bg-muted px-3 py-2 text-[11px] text-muted-foreground">
             <ShieldAlert className="size-3.5" />

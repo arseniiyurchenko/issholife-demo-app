@@ -1,5 +1,6 @@
 import { type ReactNode, useState } from "react";
 import { BookOpen, CircleHelp } from "lucide-react";
+import { useLocation } from "react-router";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +21,14 @@ export function ScreenHint(props: Props) {
   const [infoOpen, setInfoOpen] = useState(false);
   const [brdOpen, setBrdOpen] = useState(false);
   const requirement = getScreenRequirements(props.title);
+  const { pathname } = useLocation();
+  const hasMobileBottomTabs = pathname.startsWith("/screens/public") || pathname.startsWith("/screens/member");
+  const infoButtonBottomClass = hasMobileBottomTabs
+    ? "bottom-[calc(5.5rem+env(safe-area-inset-bottom))] md:bottom-5"
+    : "bottom-5";
+  const requirementsButtonBottomClass = hasMobileBottomTabs
+    ? "bottom-[calc(9rem+env(safe-area-inset-bottom))] md:bottom-20"
+    : "bottom-20";
 
   return (
     <>
@@ -29,7 +38,7 @@ export function ScreenHint(props: Props) {
           aria-label="Open business requirements"
           title={requirement.featureName}
           onClick={() => setBrdOpen(true)}
-          className="fixed right-5 bottom-20 z-40 flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95"
+          className={`fixed right-5 z-40 flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95 ${requirementsButtonBottomClass}`}
         >
           <BookOpen className="size-5" />
         </button>
@@ -39,7 +48,7 @@ export function ScreenHint(props: Props) {
         type="button"
         aria-label="Screen info"
         onClick={() => setInfoOpen(true)}
-        className="fixed right-5 bottom-5 z-40 flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95"
+        className={`fixed right-5 z-40 flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95 ${infoButtonBottomClass}`}
       >
         <CircleHelp className="size-5" />
       </button>

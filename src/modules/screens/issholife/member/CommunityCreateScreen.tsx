@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ArrowLeft, MapPin, Calendar, Users, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router";
 import { useI18n } from "@/modules/core/i18n";
 import { ScreenHint } from "@/modules/core/components/ScreenHint";
 import { BackendHintButton } from "@/modules/core/components/BackendHintButton";
@@ -9,16 +10,20 @@ import { IsshoLifeLayout } from "../components/IsshoLifeLayout";
 export function CommunityCreateScreen() {
   const { t } = useI18n();
   const hints = useBackendHints();
+  const navigate = useNavigate();
   const [subtype, setSubtype] = useState<"meetup" | "activity" | null>(null);
   const [title, setTitle] = useState("");
 
   return (
     <IsshoLifeLayout showToggle={false}>
       <div className="border-b bg-card px-4 py-2.5">
-        <div className="flex items-center gap-2.5">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2.5"
+        >
           <ArrowLeft className="size-4 text-muted-foreground" />
           <span className="text-xs font-semibold text-foreground">{t("create.title")}</span>
-        </div>
+        </button>
       </div>
       <div className="p-4">
         <h2 className="mb-4 text-base font-bold text-foreground">What are you creating?</h2>

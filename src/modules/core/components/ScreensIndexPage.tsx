@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import {
   ArrowLeft,
-  Bell,
   Calendar,
   Car,
   CheckCircle,
@@ -24,7 +23,6 @@ import {
   Shield,
   ShieldCheck,
   Store,
-  Users,
 } from "lucide-react";
 
 interface ScreenLink {
@@ -32,6 +30,14 @@ interface ScreenLink {
   href: string;
   description: string;
   icon: React.ElementType;
+}
+
+function getDemoHref(href: string): string {
+  if (!href.startsWith("/screens/member/")) {
+    return href;
+  }
+
+  return `${href}?demo-auth=1`;
 }
 
 const GROUPS: { title: string; screens: ScreenLink[] }[] = [
@@ -48,21 +54,22 @@ const GROUPS: { title: string; screens: ScreenLink[] }[] = [
     screens: [
       { title: "Area Feed (Public)", href: "/screens/public/feed", description: "Teaser feed with locked sections", icon: Compass },
       { title: "Listing Detail (Public)", href: "/screens/public/listing/1", description: "Listing preview with gated content", icon: MapPin },
+      { title: "Rides (Public Tab)", href: "/screens/public/rideshare", description: "Bottom-tab destination for public rides", icon: Car },
       { title: "Stay Browse (Public)", href: "/screens/public/stay", description: "Accommodation cards with locked pricing", icon: Home },
-      { title: "Ride Share (Public)", href: "/screens/public/rideshare", description: "Aggregate ride count, locked posts", icon: Car },
     ],
   },
   {
     title: "Member",
     screens: [
       { title: "Area Feed", href: "/screens/member/feed", description: "Unlocked discovery feed with join CTAs", icon: Compass },
-      { title: "Listing Detail", href: "/screens/member/listing/1", description: "Full detail with join, chat, transport", icon: MapPin },
-      { title: "Join Flow", href: "/screens/member/join/1", description: "Transport selection and confirmation", icon: CheckCircle },
-      { title: "Event Chat", href: "/screens/member/chat/1", description: "Announcements and logistics channels", icon: MessageCircle },
       { title: "Going", href: "/screens/member/going", description: "Joined events with attendance stats", icon: Calendar },
       { title: "Stay (Member)", href: "/screens/member/stay", description: "Unlocked pricing, book on Trust", icon: Home },
-      { title: "Ride Share Pool", href: "/screens/member/rideshare", description: "Individual rides, create ride, cost-split", icon: Car },
-      { title: "Ride Share Detail", href: "/screens/member/rideshare/1", description: "Single ride with cost breakdown", icon: Car },
+      { title: "Rides (Member Tab)", href: "/screens/member/rideshare", description: "Ride pool with mocked requests, My Rides state, and quick chat actions", icon: Car },
+      { title: "Create Ride", href: "/screens/member/rideshare/create", description: "Create a new rideshare listing", icon: Plus },
+      { title: "Listing Detail", href: "/screens/member/listing/1", description: "Full detail with join, chat, transport", icon: MapPin },
+      { title: "Join Flow", href: "/screens/member/join/1", description: "Transport selection and confirmation", icon: CheckCircle },
+      { title: "Ride Detail (Request + Driver Chat)", href: "/screens/member/rideshare/1", description: "Mocked ride request state with request-sent CTA and driver chat entry point", icon: Car },
+      { title: "Event Chat (Contextual)", href: "/screens/member/chat/1", description: "Event-level chat screen reachable from listing/going actions", icon: MessageCircle },
       { title: "Partner Q&A Thread", href: "/screens/member/qa/1", description: "Q&A with AI-assisted answers", icon: MessageSquarePlus },
       { title: "Ask Question", href: "/screens/member/qa/ask", description: "Question composer with suggestions", icon: Search },
       { title: "Following", href: "/screens/member/following", description: "Manage areas, interests, partners", icon: Heart },
@@ -111,7 +118,7 @@ export function ScreensIndexPage() {
             <h1 className="text-3xl font-bold tracking-tight">IsshoLife Demo Screens</h1>
           </div>
           <p className="mt-2 text-sm text-muted-foreground">
-            27 interactive screens. Click to open in a new tab.
+            28 interactive screens. Click to open in a new tab.
           </p>
         </div>
 
@@ -125,7 +132,7 @@ export function ScreensIndexPage() {
                 {group.screens.map((screen) => (
                   <a
                     key={screen.href}
-                    href={screen.href}
+                    href={getDemoHref(screen.href)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex items-start gap-4 rounded-xl border bg-card p-4 shadow-sm transition-all hover:border-primary/30 hover:shadow-md"

@@ -1,14 +1,32 @@
-import { Calendar, MessageCircle, Users } from "lucide-react";
+import { Calendar, MessageCircle } from "lucide-react";
+import type { MouseEvent } from "react";
+import { useNavigate } from "react-router";
 import { useI18n } from "@/modules/core/i18n";
 import { ScreenHint } from "@/modules/core/components/ScreenHint";
 import { BackendHintButton } from "@/modules/core/components/BackendHintButton";
 import { LISTINGS } from "@/modules/core/issholife-data";
 import { IsshoLifeLayout } from "../components/IsshoLifeLayout";
-import { Badge } from "../components/Badge";
+import { useIsshoLife } from "../issholife-context";
 
 export function GoingTabScreen() {
   const { t, lang } = useI18n();
-  const joinedListings = LISTINGS.slice(0, 2);
+  const navigate = useNavigate();
+  const { participationByListingId } = useIsshoLife();
+  const participatingListings = LISTINGS.filter(
+    (listing) => participationByListingId[listing.id] !== undefined,
+  );
+
+  function openListingDetails(listingId: number): void {
+    navigate(`/screens/member/listing/${listingId}`);
+  }
+
+  function openListingChat(
+    event: MouseEvent<HTMLButtonElement>,
+    listingId: number,
+  ): void {
+    event.stopPropagation();
+    navigate(`/screens/member/chat/${listingId}`);
+  }
 
   return (
     <IsshoLifeLayout showToggle={false}>
@@ -16,17 +34,36 @@ export function GoingTabScreen() {
         <h2 className="text-sm font-bold text-foreground">{t("feed.going")}</h2>
       </div>
       <div className="p-4">
-        {joinedListings.map((l) => {
+        {participatingListings.length === 0 && (
+          <div className="rounded-xl border bg-card p-6 text-center">
+            <div className="mb-2 text-sm font-bold text-foreground">
+              {t("feed.noEventsYet")}
+            </div>
+            <div className="text-xs text-muted-foreground">{t("feed.browseToJoin")}</div>
+          </div>
+        )}
+        {participatingListings.map((l) => {
           const title = lang === "ja" ? l.titleJa : l.title;
+          const participation = participationByListingId[l.id];
+          const isCancelled = participation.status === "cancelled";
           return (
-            <div key={l.id} className="mb-3 overflow-hidden rounded-xl border bg-card shadow-sm">
+            <button
+              key={l.id}
+              type="button"
+              onClick={() => openListingDetails(l.id)}
+              className="mb-3 w-full overflow-hidden rounded-xl border bg-card text-left shadow-sm transition-shadow hover:shadow-md"
+            >
               <div className="flex items-center gap-3 p-3.5">
                 <div
                   className="size-13 shrink-0 rounded-lg bg-cover bg-center"
                   style={{ backgroundImage: `url('${l.image}')`, width: 52, height: 52 }}
                 />
                 <div className="flex-1">
-                  <div className="text-sm font-bold text-[var(--il-going)]">{title}</div>
+                  <div
+                    className={`text-sm font-bold ${isCancelled ? "text-destructive" : "text-[var(--il-going)]"}`}
+                  >
+                    {title}
+                  </div>
                   <div className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
                     <Calendar className="size-3" />
                     {l.date} &middot; {l.time}
@@ -35,8 +72,10 @@ export function GoingTabScreen() {
                     <div className="mt-0.5 text-[11px] text-[var(--il-community)]">{l.transportNote}</div>
                   )}
                 </div>
-                <span className="rounded-md bg-[var(--il-going-bg)] px-2.5 py-1 text-[10px] font-bold text-[var(--il-going)]">
-                  Going
+                <span
+                  className={`rounded-md px-2.5 py-1 text-[10px] font-bold ${isCancelled ? "bg-destructive/10 text-destructive" : "bg-[var(--il-going-bg)] text-[var(--il-going)]"}`}
+                >
+                  {isCancelled ? "Cancelled" : "Going"}
                 </span>
               </div>
               <div className="flex border-t">
@@ -53,7 +92,18 @@ export function GoingTabScreen() {
                   <div className="text-[10px] text-muted-foreground">{l.date.split(" ")[0]}</div>
                 </div>
               </div>
-            </div>
+              <div className="border-t p-2.5">
+                <button
+                  type="button"
+                  onClick={(event) => openListingChat(event, l.id)}
+                  className="flex w-full items-center justify-center gap-1.5 rounded-lg border bg-muted py-2 text-xs font-semibold text-foreground"
+                >
+                  <MessageCircle className="size-3.5" />
+                  {t("chat.openChat")}
+                  {l.chat.length > 0 && ` (${l.chat.length})`}
+                </button>
+              </div>
+            </button>
           );
         })}
       </div>
