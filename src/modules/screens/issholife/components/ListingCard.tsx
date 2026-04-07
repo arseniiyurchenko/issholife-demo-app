@@ -12,6 +12,7 @@ interface Props {
 export function ListingCard({ listing, isJoined, onClick }: Props) {
   const { lang, t } = useI18n();
   const title = lang === "ja" ? listing.titleJa : listing.title;
+  const priceColorClass = listing.type === "tour" ? "text-[var(--il-tour)]" : "text-[var(--il-pro)]";
 
   return (
     <div
@@ -26,7 +27,7 @@ export function ListingCard({ listing, isJoined, onClick }: Props) {
         <div className="mb-1 flex items-center justify-between">
           <Badge type={listing.type} sub={listing.sub} />
           {listing.price && (
-            <span className="text-xs font-bold text-[var(--il-pro)]">
+            <span className={`text-xs font-bold ${priceColorClass}`}>
               {listing.price}
             </span>
           )}

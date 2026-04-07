@@ -17,6 +17,12 @@ export function GoingTabScreen() {
   );
 
   function openListingDetails(listingId: number): void {
+    const listing = LISTINGS.find((item) => item.id === listingId);
+    if (listing?.type === "tour") {
+      navigate(`/screens/member/tour/${listingId}`);
+      return;
+    }
+
     navigate(`/screens/member/listing/${listingId}`);
   }
 
@@ -68,9 +74,6 @@ export function GoingTabScreen() {
                     <Calendar className="size-3" />
                     {l.date} &middot; {l.time}
                   </div>
-                  {l.transport === "organizer" && (
-                    <div className="mt-0.5 text-[11px] text-[var(--il-community)]">{l.transportNote}</div>
-                  )}
                 </div>
                 <span
                   className={`rounded-md px-2.5 py-1 text-[10px] font-bold ${isCancelled ? "bg-destructive/10 text-destructive" : "bg-[var(--il-going-bg)] text-[var(--il-going)]"}`}

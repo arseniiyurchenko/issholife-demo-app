@@ -1,11 +1,12 @@
 interface Props {
-  type: "community" | "pro" | "stay";
+  type: "community" | "pro" | "tour" | "stay";
   sub?: string;
 }
 
 const STYLES: Record<Props["type"], { bg: string; text: string }> = {
   community: { bg: "bg-[var(--il-community-bg)]", text: "text-[var(--il-community)]" },
   pro: { bg: "bg-[var(--il-pro-bg)]", text: "text-[var(--il-pro)]" },
+  tour: { bg: "bg-[var(--il-tour-bg)]", text: "text-[var(--il-tour)]" },
   stay: { bg: "bg-[var(--il-stay-bg)]", text: "text-[var(--il-stay)]" },
 };
 

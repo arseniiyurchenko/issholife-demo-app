@@ -52,7 +52,7 @@ export function RideSharePublicScreen() {
         </Lock>
 
         <div className="mt-4 rounded-lg bg-muted p-3 text-center text-[11px] text-muted-foreground">
-          {t("ride.costSplitOnly")}
+          {t("ride.costSplitOnly")} Ride-share coordination is standalone and separate from listing joins.
         </div>
       </div>
       <ScreenHint

@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { Globe } from "lucide-react";
+import { Globe, Plus } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { useI18n } from "@/modules/core/i18n";
 import { LanguageToggle } from "./LanguageToggle";
@@ -24,6 +24,10 @@ export function IsshoLifeLayout({
   const { pathname } = useLocation();
   const isIsshoLifeMainFlow =
     pathname.startsWith("/screens/public") || pathname.startsWith("/screens/member");
+  const shouldShowCreateFab =
+    !isPublic &&
+    pathname.startsWith("/screens/member") &&
+    pathname !== "/screens/member/create";
   const shouldShowBottomNav = showBottomNav && isIsshoLifeMainFlow;
   const productTabs = isIsshoLifeMainFlow
     ? getIsshoLifeBottomTabs({ pathname, isPublic, t })
@@ -105,6 +109,15 @@ export function IsshoLifeLayout({
           isPublic={isPublic}
           goingCount={joinedIds.length}
         />
+      )}
+      {shouldShowCreateFab && (
+        <Link
+          to="/screens/member/create"
+          className="fixed right-4 bottom-[calc(5.25rem+env(safe-area-inset-bottom))] z-40 inline-flex items-center gap-2 rounded-full bg-[var(--il-accent)] px-4 py-3 text-xs font-bold text-white shadow-lg transition-opacity hover:opacity-95 md:right-8 md:bottom-6"
+        >
+          <Plus className="size-3.5" />
+          {t("common.createEvent")}
+        </Link>
       )}
     </ResponsiveShell>
   );

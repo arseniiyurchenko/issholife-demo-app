@@ -44,7 +44,7 @@ export function AreaFeedPublicScreen() {
           <ListingCard
             key={l.id}
             listing={l}
-            onClick={() => navigate(`/screens/public/listing/${l.id}`)}
+            onClick={() => navigate(l.type === "tour" ? `/screens/public/tour/${l.id}` : `/screens/public/listing/${l.id}`)}
           />
         ))}
         {filtered.length === 0 && (

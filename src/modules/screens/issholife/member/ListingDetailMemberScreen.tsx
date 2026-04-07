@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { ArrowLeft, MapPin, Calendar, Clock, Users, MessageCircle, MessageCircleQuestion, Car, Bus, CheckCircle } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, Clock, Users, MessageCircle, MessageCircleQuestion, Car, CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useI18n } from "@/modules/core/i18n";
 import { ScreenHint } from "@/modules/core/components/ScreenHint";
 import { BackendHintButton } from "@/modules/core/components/BackendHintButton";
 import { useBackendHints } from "@/modules/core/backend-hints";
-import { LISTINGS, RIDES, STAYS } from "@/modules/core/issholife-data";
+import { LISTINGS, STAYS } from "@/modules/core/issholife-data";
 import type { Stay } from "@/modules/core/issholife-data";
 import { IsshoLifeLayout } from "../components/IsshoLifeLayout";
 import { Badge } from "../components/Badge";
-import { RidePoolCard } from "../components/RidePoolCard";
 import { EventChat } from "../components/EventChat";
 import { JoinSheet } from "../components/JoinSheet";
 import { TrustRedirect } from "../components/TrustRedirect";
@@ -37,7 +36,6 @@ export function ListingDetailMemberScreen() {
   const isJoined = participationStatus === "going";
 
   const [showChat, setShowChat] = useState(false);
-  const [showRides, setShowRides] = useState(false);
   const [joinOpen, setJoinOpen] = useState(false);
   const [selectedStay, setSelectedStay] = useState<Stay | null>(null);
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
@@ -87,33 +85,17 @@ export function ListingDetailMemberScreen() {
         <div className="mb-3 rounded-xl border bg-card p-4">
           <h3 className="mb-2 flex items-center gap-1.5 text-xs font-bold text-foreground">
             <Car className="size-3.5" />
-            {t("listing.transport")}
+            Ride-share
           </h3>
-          {l.transport === "organizer" ? (
-            <>
-              <div className="mb-1 flex items-center gap-1.5 rounded-md bg-[var(--il-going-bg)] px-3 py-2 text-xs text-[var(--il-going)]">
-                <Bus className="size-3.5" />
-                {t("listing.organizerProvides")}
-              </div>
-              <div className="text-xs text-muted-foreground">{l.transportNote}</div>
-            </>
-          ) : (
-            <div className="text-xs text-muted-foreground">{t("listing.selfOrganized")}</div>
-          )}
+          <div className="text-xs text-muted-foreground">
+            Ride-share is coordinated separately and is not included in this listing.
+          </div>
           <button
-            onClick={() => setShowRides(!showRides)}
+            onClick={() => navigate("/screens/member/rideshare")}
             className="mt-2.5 w-full rounded-lg border bg-muted py-2 text-xs font-semibold text-muted-foreground"
           >
-            {t("ride.pool")} ({RIDES.length})
+            Open {t("ride.pool")}
           </button>
-          {showRides && (
-            <div className="mt-2.5">
-              {RIDES.map((r) => <RidePoolCard key={r.id} ride={r} />)}
-              <div className="mt-1.5 rounded-md bg-muted p-2 text-center text-[10.5px] text-muted-foreground">
-                {t("ride.costSplitOnly")}
-              </div>
-            </div>
-          )}
         </div>
 
         <div className="mb-3 flex items-center gap-2.5 rounded-xl border bg-card p-4">
@@ -207,10 +189,10 @@ export function ListingDetailMemberScreen() {
         listing={l}
         open={joinOpen}
         onOpenChange={setJoinOpen}
-        onConfirm={(transport) => {
-          joinListing(l.id, transport);
+        onConfirm={() => {
+          joinListing(l.id);
           setJoinOpen(false);
-          hints.push(`Join Record created for "${l.title}". Transport status: ${transport}. Identity revealed. Chat access granted.`);
+          hints.push(`Join Record created for "${l.title}". Identity revealed. Chat access granted.`);
         }}
       />
 
@@ -239,7 +221,7 @@ export function ListingDetailMemberScreen() {
 
       <ScreenHint
         title="Listing Detail (Member)"
-        description="Full member view with join flow, transport selection, event chat, and ride share pool."
+        description="Full member view with join flow, contextual chat, and separate ride-share access."
       />
       <BackendHintButton />
 

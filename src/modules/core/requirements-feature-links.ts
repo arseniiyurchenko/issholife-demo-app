@@ -34,7 +34,7 @@ Stay tab (separate) with accommodation from Trust network. Stay injection experi
   "Listing Detail (Public)": {
     featureName: "Listing Details (Public Teaser)",
     source: "brd",
-    content: `Single unified details page for any Listing subtype (event/meetup/activity/community/partner offer/experience). Public teaser view with inline locks on members-only sections (chat, offers, pricing, contact). Transportation section always shows organizer contribution status and Ride Share tool entry. Partner Q&A entry point: opens partner Q&A; public can read threads and start composing a question (submit triggers Join Gate).`,
+    content: `Single unified details page for standard Listing subtypes (community/pro). Public teaser view with inline locks on members-only sections (chat, offers, pricing, contact). Ride-share is presented as a separate coordination tool and must not be represented as a bundled product in standard listings. Partner Q&A entry point: opens partner Q&A; public can read threads and start composing a question (submit triggers Join Gate). Licensed bundled products are handled by a dedicated Tour detail route.`,
   },
   "Stay Browse (Public)": {
     featureName: "Accommodation (Trust-powered Stay Tab)",
@@ -49,21 +49,21 @@ Stay tab (separate) with accommodation from Trust network. Stay injection experi
   "Area Feed (Member)": {
     featureName: "Area Feed & Discovery (Member View)",
     source: "brd",
-    content: `Full unlocked feed with all listing details visible. Join CTAs on all listings. Community vs Pro badge distinction with sub-labels (Meetup, Activity, Experience, Offer). Area-based browsing with filters (category, date, distance). Daily return / Feed Freshness: freshness only updates on meaningful state changes.`,
+    content: `Full unlocked feed with all listing details visible. Join CTAs on all listings. Community vs Pro vs Tour badge distinction with subtype labels. Area-based browsing with filters (category, date, distance). Daily return / Feed Freshness: freshness only updates on meaningful state changes. Tours are a distinct licensed product tier where bundled inclusions are allowed.`,
   },
   "Listing Detail (Member)": {
     featureName: "Listing Details + Join & Participation",
     source: "brd",
-    content: `Full details view for members (unlocked sections, full CTA access). Join Record as canonical backbone -- created on every join action. Transport status captured at join (organizer-provided or self-organized). Participation statuses: Going, Requested, Confirmed, Declined, Expired.
+    content: `Full details view for members (unlocked sections, full CTA access). Join Record as canonical backbone -- created on every join action. Participation statuses: Going, Requested, Confirmed, Declined, Expired.
 
-Join Record triggers: identity reveal, chat access, transport status, payment tracking. Event Chat access granted automatically after Join. Partner Q&A entry point available.`,
+Join Record triggers: identity reveal, chat access, and participation tracking. Event Chat access granted automatically after Join. Partner Q&A entry point available. Ride-share is linked as separate coordination, not embedded as bundled product in standard listings.`,
   },
   "Join Flow": {
-    featureName: "Unified Join UX + Transportation",
+    featureName: "Unified Join UX + Ride-share Separation",
     source: "brd",
-    content: `Single primary CTA "Join" everywhere across listing types. CTA/status naming: CTA is "Join"; status is "Going"; avoid "Booked/Reserved/Attending." Join creates Join Record with transport status.
+    content: `Single primary CTA "Join" everywhere across listing types. CTA/status naming: CTA is "Join"; status is "Going"; avoid "Booked/Reserved/Attending." Join creates Join Record for participation state.
 
-Two-layer transport model: (1) Organizer provides transport or doesn't (only organizer-controlled stance), and (2) System-level ride share always available. If organizer transport provided: defaults to included with opt-out; if capacity full, fallback to self-organized + ride share surfaced. If no organizer transport: self-organized default, ride share surfaced immediately.
+For community/pro listings, transport is not offered as a bundled product. Ride-share is always system-level and separate from listing purchase/join terms. Bundled transport/accommodation is allowed only in the licensed Tour tier with dedicated screens/routes.
 
 Identity revealed after joining. Strict anti-grey-taxi enforcement for ride share.`,
   },
@@ -125,14 +125,31 @@ Recommendation: Chat-based request flow with optional inspirational chips/tags; 
   "Partner Dashboard": {
     featureName: "Partner Model & Availability",
     source: "brd",
-    content: `Three partner levels: Starter, Growth, Pro. Availability toggle On/Off (Off = fully hidden and unreachable). Pro listings: Experience vs Offer subtypes. Q&A room with AI (paid feature, v2 for AI layer). Media system for content generation and distribution (v2).
+    content: `Three partner levels: Starter, Growth, Pro. Availability toggle On/Off (Off = fully hidden and unreachable). Pro listings: Experience vs Offer subtypes, plus separate licensed Tour listings. Q&A room with AI (paid feature, v2 for AI layer). Media system for content generation and distribution (v2).
 
 Partner-facing terminology: dashboard uses "Incoming questions" and actions "Approve AI answer" or "Reply." Partner escalation cap: max 20 active needs-attention/escalated threads per partner.`,
   },
   "Create Pro Listing": {
     featureName: "Partner Pro Listing Create/Edit",
     source: "brd",
-    content: `Create/edit flow for Partner Pro listings. Choose listing type: Experience vs Offer. Core fields (title, description, location/area, media, pricing). Availability toggle On/Off (controls visibility/bookability). Save draft, publish, and validation/moderation checks. Partner Q&A is attached to the Partner; listings can link into that partner Q&A contextually.`,
+    content: `Create/edit flow for Partner Pro listings. Choose listing type: Experience vs Offer. Core fields (title, description, location/area, media, pricing). Availability toggle On/Off (controls visibility/bookability). Save draft, publish, and validation/moderation checks. Partner Q&A is attached to the Partner; listings can link into that partner Q&A contextually.
+
+If bundled transport/accommodation is needed, partner must use the dedicated licensed Tour create flow instead of Pro listing create.`,
+  },
+  "Tour Detail (Public)": {
+    featureName: "Licensed Tour Tier (Public Teaser)",
+    source: "prototype",
+    content: `Public-facing teaser for licensed tour products. Shows high-level itinerary and unlock CTA, while full bundled details remain member-gated.`,
+  },
+  "Tour Detail (Member)": {
+    featureName: "Licensed Tour Tier (Member Detail)",
+    source: "brd",
+    content: `Dedicated member detail route for licensed tours where bundled transport/accommodation can be presented under regulated operations. Uses the same Join/Going participation model as other listings.`,
+  },
+  "Create Tour Listing": {
+    featureName: "Licensed Tour Tier (Partner Create)",
+    source: "brd",
+    content: `Partner create flow specifically for licensed tour inventory. This is the only flow where bundled inclusions (transport/accommodation) are represented as part of the product.`,
   },
   "Q&A Inbox": {
     featureName: "Partner Q&A Inbox",

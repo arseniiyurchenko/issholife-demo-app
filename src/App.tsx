@@ -13,6 +13,7 @@ import { ListingDetailPublicScreen } from "@/modules/screens/issholife/public/Li
 import { StayBrowsePublicScreen } from "@/modules/screens/issholife/public/StayBrowsePublicScreen";
 import { RideSharePublicScreen } from "@/modules/screens/issholife/public/RideSharePublicScreen";
 import { GoingPublicScreen } from "@/modules/screens/issholife/public/GoingPublicScreen";
+import { TourDetailPublicScreen } from "@/modules/screens/issholife/public/TourDetailPublicScreen";
 
 // Member
 import { AreaFeedMemberScreen } from "@/modules/screens/issholife/member/AreaFeedMemberScreen";
@@ -29,12 +30,14 @@ import { PartnerQAThreadScreen } from "@/modules/screens/issholife/member/Partne
 import { AskQuestionScreen } from "@/modules/screens/issholife/member/AskQuestionScreen";
 import { FollowingScreen } from "@/modules/screens/issholife/member/FollowingScreen";
 import { CommunityCreateScreen } from "@/modules/screens/issholife/member/CommunityCreateScreen";
+import { TourDetailScreen } from "@/modules/screens/issholife/member/TourDetailScreen";
 import { RequireAuth } from "@/modules/screens/issholife/components/RequireAuth";
 
 // Partner
 import { PartnerDashboardScreen } from "@/modules/screens/issholife/partner/PartnerDashboardScreen";
 import { PartnerListingCreateScreen } from "@/modules/screens/issholife/partner/PartnerListingCreateScreen";
 import { PartnerQAInboxScreen } from "@/modules/screens/issholife/partner/PartnerQAInboxScreen";
+import { PartnerTourCreateScreen } from "@/modules/screens/issholife/partner/PartnerTourCreateScreen";
 
 // Admin
 import { AdminConsoleScreen } from "@/modules/screens/issholife/admin/AdminConsoleScreen";
@@ -60,6 +63,7 @@ export function App() {
       <Route path="/screens/public/feed" element={<AreaFeedPublicScreen />} />
       <Route path="/screens/public/going" element={<GoingPublicScreen />} />
       <Route path="/screens/public/listing/:id" element={<ListingDetailPublicScreen />} />
+      <Route path="/screens/public/tour/:id" element={<TourDetailPublicScreen />} />
       <Route path="/screens/public/stay" element={<StayBrowsePublicScreen />} />
       <Route path="/screens/public/rideshare" element={<RideSharePublicScreen />} />
 
@@ -68,6 +72,7 @@ export function App() {
         <Route path="/screens/member/feed" element={<AreaFeedMemberScreen />} />
         <Route path="/screens/member/chat" element={<MemberChatThreadsScreen />} />
         <Route path="/screens/member/listing/:id" element={<ListingDetailMemberScreen />} />
+        <Route path="/screens/member/tour/:id" element={<TourDetailScreen />} />
         <Route path="/screens/member/join/:id" element={<JoinFlowScreen />} />
         <Route path="/screens/member/chat/:id" element={<EventChatScreen />} />
         <Route path="/screens/member/going" element={<GoingTabScreen />} />
@@ -84,6 +89,7 @@ export function App() {
       {/* Partner */}
       <Route path="/screens/partner" element={<PartnerDashboardScreen />} />
       <Route path="/screens/partner/create" element={<PartnerListingCreateScreen />} />
+      <Route path="/screens/partner/create-tour" element={<PartnerTourCreateScreen />} />
       <Route path="/screens/partner/qa" element={<PartnerQAInboxScreen />} />
 
       {/* Admin */}

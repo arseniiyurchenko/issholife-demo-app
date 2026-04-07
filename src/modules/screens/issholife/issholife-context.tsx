@@ -8,12 +8,10 @@ import {
 } from "react";
 
 export type ParticipationStatus = "going" | "cancelled";
-export type JoinTransportKey = "org" | "ride" | "self";
 export type RideRequestStatus = "none" | "requested" | "confirmed";
 
 export interface ListingParticipation {
   status: ParticipationStatus;
-  transport: JoinTransportKey | null;
 }
 
 interface IsshoLifeContextValue {
@@ -28,7 +26,7 @@ interface IsshoLifeContextValue {
   signOut: () => void;
   participationByListingId: Record<number, ListingParticipation>;
   joinedIds: number[];
-  joinListing: (id: number, transport: JoinTransportKey) => void;
+  joinListing: (id: number) => void;
   cancelParticipation: (id: number) => void;
   getParticipation: (id: number) => ListingParticipation | null;
   getParticipationStatus: (id: number) => ParticipationStatus | null;
@@ -52,12 +50,11 @@ export function IsshoLifeProvider(props: PropsWithChildren) {
     Record<number, Exclude<RideRequestStatus, "none">>
   >({});
 
-  const joinListing = useCallback((id: number, transport: JoinTransportKey) => {
+  const joinListing = useCallback((id: number) => {
     setParticipationByListingId((prev) => ({
       ...prev,
       [id]: {
         status: "going",
-        transport,
       },
     }));
   }, []);

@@ -54,6 +54,7 @@ const GROUPS: { title: string; screens: ScreenLink[] }[] = [
     screens: [
       { title: "Area Feed (Public)", href: "/screens/public/feed", description: "Teaser feed with locked sections", icon: Compass },
       { title: "Listing Detail (Public)", href: "/screens/public/listing/1", description: "Listing preview with gated content", icon: MapPin },
+      { title: "Tour Detail (Public)", href: "/screens/public/tour/6", description: "Licensed tour teaser with unlock CTA", icon: MapPin },
       { title: "Rides (Public Tab)", href: "/screens/public/rideshare", description: "Bottom-tab destination for public rides", icon: Car },
       { title: "Stay Browse (Public)", href: "/screens/public/stay", description: "Accommodation cards with locked pricing", icon: Home },
     ],
@@ -66,8 +67,9 @@ const GROUPS: { title: string; screens: ScreenLink[] }[] = [
       { title: "Stay (Member)", href: "/screens/member/stay", description: "Unlocked pricing, book on Trust", icon: Home },
       { title: "Rides (Member Tab)", href: "/screens/member/rideshare", description: "Ride pool with mocked requests, My Rides state, and quick chat actions", icon: Car },
       { title: "Create Ride", href: "/screens/member/rideshare/create", description: "Create a new rideshare listing", icon: Plus },
-      { title: "Listing Detail", href: "/screens/member/listing/1", description: "Full detail with join, chat, transport", icon: MapPin },
-      { title: "Join Flow", href: "/screens/member/join/1", description: "Transport selection and confirmation", icon: CheckCircle },
+      { title: "Listing Detail", href: "/screens/member/listing/1", description: "Full detail with join and contextual chat", icon: MapPin },
+      { title: "Tour Detail", href: "/screens/member/tour/6", description: "Licensed tier details with bundled inclusions", icon: MapPin },
+      { title: "Join Flow", href: "/screens/member/join/1", description: "Join confirmation and participation status", icon: CheckCircle },
       { title: "Ride Detail (Request + Driver Chat)", href: "/screens/member/rideshare/1", description: "Mocked ride request state with request-sent CTA and driver chat entry point", icon: Car },
       { title: "Event Chat (Contextual)", href: "/screens/member/chat/1", description: "Event-level chat screen reachable from listing/going actions", icon: MessageCircle },
       { title: "Partner Q&A Thread", href: "/screens/member/qa/1", description: "Q&A with AI-assisted answers", icon: MessageSquarePlus },
@@ -81,6 +83,7 @@ const GROUPS: { title: string; screens: ScreenLink[] }[] = [
     screens: [
       { title: "Dashboard", href: "/screens/partner", description: "Listings, availability, stats overview", icon: LayoutDashboard },
       { title: "Create Listing", href: "/screens/partner/create", description: "Experience vs Offer listing creation", icon: Store },
+      { title: "Create Tour Listing", href: "/screens/partner/create-tour", description: "Licensed bundled tour creation flow", icon: Store },
       { title: "Q&A Inbox", href: "/screens/partner/qa", description: "Incoming questions with AI drafts", icon: MessageCircle },
     ],
   },
@@ -118,7 +121,7 @@ export function ScreensIndexPage() {
             <h1 className="text-3xl font-bold tracking-tight">IsshoLife Demo Screens</h1>
           </div>
           <p className="mt-2 text-sm text-muted-foreground">
-            28 interactive screens. Click to open in a new tab.
+            31 interactive screens. Click to open in a new tab.
           </p>
         </div>
 

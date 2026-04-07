@@ -88,7 +88,7 @@ export function RideSharePoolScreen() {
         ))}
         <div className="mt-3 flex items-center gap-2 rounded-lg bg-muted p-3 text-[11px] text-muted-foreground">
           <AlertTriangle className="size-3.5 shrink-0" />
-          {t("ride.costSplitOnly")}
+          {t("ride.costSplitOnly")} Ride-share posts are independent and not bundled with listing participation.
         </div>
       </div>
       <ScreenHint

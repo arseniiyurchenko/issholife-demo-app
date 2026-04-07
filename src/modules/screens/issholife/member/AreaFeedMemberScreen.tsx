@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { MapPin, Tag } from "lucide-react";
+import { MapPin, Tag, Plus } from "lucide-react";
 import { useI18n } from "@/modules/core/i18n";
 import { ScreenHint } from "@/modules/core/components/ScreenHint";
 import { BackendHintButton } from "@/modules/core/components/BackendHintButton";
@@ -26,6 +26,21 @@ export function AreaFeedMemberScreen() {
   return (
     <IsshoLifeLayout showToggle={false}>
       <div className="p-4">
+        <button
+          type="button"
+          onClick={() => navigate("/screens/member/create")}
+          className="mb-4 flex w-full items-center justify-between rounded-xl border bg-[var(--il-accent-bg)] px-4 py-3 text-left"
+        >
+          <div>
+            <div className="text-xs font-bold text-foreground">{t("feed.createCtaTitle")}</div>
+            <div className="text-[11px] text-muted-foreground">{t("feed.createCtaDescription")}</div>
+          </div>
+          <span className="inline-flex items-center gap-1 rounded-full bg-[var(--il-accent)] px-2.5 py-1 text-[10px] font-bold text-white">
+            <Plus className="size-3" />
+            {t("common.create")}
+          </span>
+        </button>
+
         <div className="mb-4 flex gap-2">
           <SearchSelect
             items={AREAS}
@@ -47,7 +62,7 @@ export function AreaFeedMemberScreen() {
             key={l.id}
             listing={l}
             isJoined={joinedIds.includes(l.id)}
-            onClick={() => navigate(`/screens/member/listing/${l.id}`)}
+            onClick={() => navigate(l.type === "tour" ? `/screens/member/tour/${l.id}` : `/screens/member/listing/${l.id}`)}
           />
         ))}
         {filtered.length === 0 && (

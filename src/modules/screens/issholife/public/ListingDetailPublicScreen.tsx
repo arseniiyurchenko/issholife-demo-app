@@ -76,16 +76,6 @@ export function ListingDetailPublicScreen() {
           <p className="text-xs leading-relaxed text-muted-foreground">{desc}</p>
         </div>
 
-        <Lock isLocked label={t("listing.transport")} onUnlock={unlock}>
-          <div className="rounded-xl border bg-card p-4">
-            <h3 className="mb-2 text-xs font-bold text-foreground">{t("listing.transport")}</h3>
-            <div className="rounded-md bg-[var(--il-going-bg)] px-3 py-2 text-xs text-[var(--il-going)]">
-              {t("listing.organizerProvides")}
-            </div>
-            <div className="mt-1 text-xs text-muted-foreground">{l.transportNote}</div>
-          </div>
-        </Lock>
-
         <div className="mt-3">
           <Lock isLocked label={t("listing.organizer")} onUnlock={unlock}>
             <div className="flex items-center gap-2.5 rounded-xl border bg-card p-4">
@@ -118,7 +108,7 @@ export function ListingDetailPublicScreen() {
 
       <ScreenHint
         title="Listing Detail (Public)"
-        description="Public teaser view of a listing with inline locks on transport, organizer, and join sections."
+        description="Public teaser view of a listing with inline locks on organizer and join sections."
       />
       <BackendHintButton />
     </IsshoLifeLayout>

@@ -8,6 +8,9 @@ export function mapPublicPathToMemberPath(publicPath: string): string {
   if (publicPath.startsWith("/screens/public/listing/")) {
     return publicPath.replace("/screens/public/listing/", "/screens/member/listing/");
   }
+  if (publicPath.startsWith("/screens/public/tour/")) {
+    return publicPath.replace("/screens/public/tour/", "/screens/member/tour/");
+  }
 
   return PUBLIC_TO_MEMBER_STATIC_PATHS[publicPath] ?? "/screens/member/feed";
 }

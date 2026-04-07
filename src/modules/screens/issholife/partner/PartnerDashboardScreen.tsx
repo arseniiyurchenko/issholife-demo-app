@@ -11,8 +11,8 @@ import { Badge } from "../components/Badge";
 export function PartnerDashboardScreen() {
   const { t } = useI18n();
   const hints = useBackendHints();
-  const proListings = LISTINGS.filter((l) => l.type === "pro");
-  const [availability, setAvailability] = useState<Record<number, boolean>>({ 2: true, 4: true });
+  const managedListings = LISTINGS.filter((l) => l.type === "pro" || l.type === "tour");
+  const [availability, setAvailability] = useState<Record<number, boolean>>({ 2: true, 4: true, 6: true });
 
   return (
     <PartnerLayout>
@@ -39,8 +39,9 @@ export function PartnerDashboardScreen() {
 
         <h2 className="mb-3 text-sm font-bold text-foreground">Your Listings</h2>
         <div className="space-y-3">
-          {proListings.map((l) => {
+          {managedListings.map((l) => {
             const isOn = availability[l.id] ?? true;
+            const priceColorClass = l.type === "tour" ? "text-[var(--il-tour)]" : "text-[var(--il-pro)]";
             return (
               <div key={l.id} className="flex items-center gap-4 rounded-xl border bg-card p-4">
                 <div
@@ -49,8 +50,8 @@ export function PartnerDashboardScreen() {
                 />
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <Badge type="pro" sub={l.sub} />
-                    {l.price && <span className="text-xs font-bold text-[var(--il-pro)]">{l.price}</span>}
+                    <Badge type={l.type} sub={l.sub} />
+                    {l.price && <span className={`text-xs font-bold ${priceColorClass}`}>{l.price}</span>}
                   </div>
                   <div className="mt-1 text-sm font-semibold text-foreground">{l.title}</div>
                   <div className="text-xs text-muted-foreground">{l.area} &middot; {l.date} &middot; {l.attendees}/{l.maxAttendees}</div>
