@@ -26,12 +26,12 @@ export function GoingTabScreen() {
     navigate(`/screens/member/listing/${listingId}`);
   }
 
-  function openListingChat(
+  function openListingMessaging(
     event: MouseEvent<HTMLButtonElement>,
-    listingId: number,
+    messagingLink: string,
   ): void {
     event.stopPropagation();
-    navigate(`/screens/member/chat/${listingId}`);
+    window.open(messagingLink, "_blank", "noopener,noreferrer");
   }
 
   return (
@@ -86,10 +86,6 @@ export function GoingTabScreen() {
                   <div className="text-base font-extrabold text-foreground">{l.attendees + 1}</div>
                   <div className="text-[10px] text-muted-foreground">{t("common.attendees")}</div>
                 </div>
-                <div className="flex-1 border-r py-2.5 text-center">
-                  <div className="text-base font-extrabold text-foreground">{l.chat.length}</div>
-                  <div className="text-[10px] text-muted-foreground">{t("common.messages")}</div>
-                </div>
                 <div className="flex-1 py-2.5 text-center">
                   <div className="text-base font-extrabold text-foreground">{l.date.split(" ")[1]}</div>
                   <div className="text-[10px] text-muted-foreground">{l.date.split(" ")[0]}</div>
@@ -98,12 +94,11 @@ export function GoingTabScreen() {
               <div className="border-t p-2.5">
                 <button
                   type="button"
-                  onClick={(event) => openListingChat(event, l.id)}
+                  onClick={(event) => openListingMessaging(event, l.messagingLink)}
                   className="flex w-full items-center justify-center gap-1.5 rounded-lg border bg-muted py-2 text-xs font-semibold text-foreground"
                 >
                   <MessageCircle className="size-3.5" />
-                  {t("chat.openChat")}
-                  {l.chat.length > 0 && ` (${l.chat.length})`}
+                  Join {l.messagingPlatform === "whatsapp" ? "WhatsApp" : "LINE"} group
                 </button>
               </div>
             </button>

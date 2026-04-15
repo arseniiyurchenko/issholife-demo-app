@@ -19,8 +19,6 @@ import { TourDetailPublicScreen } from "@/modules/screens/issholife/public/TourD
 import { AreaFeedMemberScreen } from "@/modules/screens/issholife/member/AreaFeedMemberScreen";
 import { ListingDetailMemberScreen } from "@/modules/screens/issholife/member/ListingDetailMemberScreen";
 import { JoinFlowScreen } from "@/modules/screens/issholife/member/JoinFlowScreen";
-import { EventChatScreen } from "@/modules/screens/issholife/member/EventChatScreen";
-import { MemberChatThreadsScreen } from "@/modules/screens/issholife/member/MemberChatThreadsScreen";
 import { GoingTabScreen } from "@/modules/screens/issholife/member/GoingTabScreen";
 import { StayMemberScreen } from "@/modules/screens/issholife/member/StayMemberScreen";
 import { RideSharePoolScreen } from "@/modules/screens/issholife/member/RideSharePoolScreen";
@@ -70,11 +68,9 @@ export function App() {
       {/* Member */}
       <Route element={<RequireAuth />}>
         <Route path="/screens/member/feed" element={<AreaFeedMemberScreen />} />
-        <Route path="/screens/member/chat" element={<MemberChatThreadsScreen />} />
         <Route path="/screens/member/listing/:id" element={<ListingDetailMemberScreen />} />
         <Route path="/screens/member/tour/:id" element={<TourDetailScreen />} />
         <Route path="/screens/member/join/:id" element={<JoinFlowScreen />} />
-        <Route path="/screens/member/chat/:id" element={<EventChatScreen />} />
         <Route path="/screens/member/going" element={<GoingTabScreen />} />
         <Route path="/screens/member/stay" element={<StayMemberScreen />} />
         <Route path="/screens/member/rideshare" element={<RideSharePoolScreen />} />

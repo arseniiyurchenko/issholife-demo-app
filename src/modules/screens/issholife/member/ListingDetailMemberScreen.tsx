@@ -9,7 +9,6 @@ import { LISTINGS, STAYS } from "@/modules/core/issholife-data";
 import type { Stay } from "@/modules/core/issholife-data";
 import { IsshoLifeLayout } from "../components/IsshoLifeLayout";
 import { Badge } from "../components/Badge";
-import { EventChat } from "../components/EventChat";
 import { JoinSheet } from "../components/JoinSheet";
 import { TrustRedirect } from "../components/TrustRedirect";
 import { useIsshoLife } from "../issholife-context";
@@ -34,8 +33,12 @@ export function ListingDetailMemberScreen() {
   const desc = lang === "ja" ? l.descriptionJa : l.description;
   const participationStatus = getParticipationStatus(l.id);
   const isJoined = participationStatus === "going";
+  const messagingLabel = l.messagingPlatform === "whatsapp" ? "WhatsApp" : "LINE";
+  const messagingLinkClassName =
+    l.messagingPlatform === "whatsapp"
+      ? "border-[#25D366]/30 bg-[#25D366]/10 text-[#1f9e4b]"
+      : "border-[#06C755]/30 bg-[#06C755]/10 text-[#079744]";
 
-  const [showChat, setShowChat] = useState(false);
   const [joinOpen, setJoinOpen] = useState(false);
   const [selectedStay, setSelectedStay] = useState<Stay | null>(null);
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
@@ -80,6 +83,13 @@ export function ListingDetailMemberScreen() {
         <div className="mb-3 rounded-xl border bg-card p-4">
           <h3 className="mb-1.5 text-xs font-bold text-foreground">{t("listing.about")}</h3>
           <p className="text-xs leading-relaxed text-muted-foreground">{desc}</p>
+        </div>
+
+        <div className="mb-3 rounded-xl border bg-card p-4">
+          <h3 className="mb-1.5 text-xs font-bold text-foreground">Messaging</h3>
+          <p className="text-xs text-muted-foreground">
+            Group chat coordination happens on {messagingLabel} after you join.
+          </p>
         </div>
 
         <div className="mb-3 rounded-xl border bg-card p-4">
@@ -161,14 +171,17 @@ export function ListingDetailMemberScreen() {
                 Participation cancelled
               </div>
             )}
-            <button
-              onClick={() => setShowChat(!showChat)}
-              className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg border bg-card py-2.5 text-xs font-semibold text-foreground"
-            >
-              <MessageCircle className="size-3.5" />
-              {showChat ? t("chat.closeChat") : t("chat.openChat")}
-              {l.chat.length > 0 && ` (${l.chat.length})`}
-            </button>
+            {isJoined && (
+              <a
+                href={l.messagingLink}
+                target="_blank"
+                rel="noreferrer"
+                className={`mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg border py-2.5 text-xs font-semibold ${messagingLinkClassName}`}
+              >
+                <MessageCircle className="size-3.5" />
+                Join Group Chat ({messagingLabel})
+              </a>
+            )}
             {isJoined && (
               <button
                 onClick={() => setCancelDialogOpen(true)}
@@ -179,10 +192,6 @@ export function ListingDetailMemberScreen() {
             )}
           </div>
         )}
-
-        {showChat && Boolean(participationStatus) && (
-          <EventChat messages={l.chat} attendeeCount={l.attendees + 1} />
-        )}
       </div>
 
       <JoinSheet
@@ -191,8 +200,7 @@ export function ListingDetailMemberScreen() {
         onOpenChange={setJoinOpen}
         onConfirm={() => {
           joinListing(l.id);
-          setJoinOpen(false);
-          hints.push(`Join Record created for "${l.title}". Identity revealed. Chat access granted.`);
+          hints.push(`Join Record created for "${l.title}". Identity revealed. Group chat handoff enabled.`);
         }}
       />
 
@@ -201,7 +209,7 @@ export function ListingDetailMemberScreen() {
           <AlertDialogHeader>
             <AlertDialogTitle>Cancel participation?</AlertDialogTitle>
             <AlertDialogDescription>
-              You will stay in this event with cancelled status, and can still open details and chat.
+              You will stay in this event with cancelled status and can still open details.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -221,7 +229,7 @@ export function ListingDetailMemberScreen() {
 
       <ScreenHint
         title="Listing Detail (Member)"
-        description="Full member view with join flow, contextual chat, and separate ride-share access."
+        description="Full member view with join flow, external messaging handoff, and separate ride-share access."
       />
       <BackendHintButton />
 

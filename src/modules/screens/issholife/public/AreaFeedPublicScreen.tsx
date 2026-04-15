@@ -1,45 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { MapPin, Tag } from "lucide-react";
 import { useI18n } from "@/modules/core/i18n";
 import { ScreenHint } from "@/modules/core/components/ScreenHint";
 import { BackendHintButton } from "@/modules/core/components/BackendHintButton";
-import { LISTINGS, AREAS, CATEGORIES } from "@/modules/core/issholife-data";
+import { LISTINGS } from "@/modules/core/issholife-data";
 import { IsshoLifeLayout } from "../components/IsshoLifeLayout";
 import { ListingCard } from "../components/ListingCard";
-import { SearchSelect } from "../components/SearchSelect";
+import {
+  FeedFilterBar,
+  createDefaultFeedFilters,
+  listingMatchesFeedFilters,
+} from "../components/FeedFilterBar";
 
 export function AreaFeedPublicScreen() {
   const { t } = useI18n();
   const navigate = useNavigate();
-  const [area, setArea] = useState<string | null>(null);
-  const [cat, setCat] = useState<string | null>(null);
+  const [filters, setFilters] = useState(createDefaultFeedFilters);
 
-  const filtered = LISTINGS.filter((l) => {
-    if (area && l.area !== area) return false;
-    if (cat && l.category !== cat) return false;
-    return true;
-  });
+  const filtered = LISTINGS.filter((listing) => listingMatchesFeedFilters(listing, filters));
 
   return (
     <IsshoLifeLayout showToggle={false}>
       <div className="p-4">
-        <div className="mb-4 flex gap-2">
-          <SearchSelect
-            items={AREAS}
-            value={area}
-            onChange={setArea}
-            placeholder={t("feed.allAreas")}
-            icon={<MapPin className="size-3.5" />}
-          />
-          <SearchSelect
-            items={CATEGORIES}
-            value={cat}
-            onChange={setCat}
-            placeholder={t("feed.allActivities")}
-            icon={<Tag className="size-3.5" />}
-          />
-        </div>
+        <FeedFilterBar filters={filters} onChange={setFilters} />
         {filtered.map((l) => (
           <ListingCard
             key={l.id}

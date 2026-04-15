@@ -18,6 +18,7 @@ export function ListingDetailPublicScreen() {
   const l = LISTINGS[0];
   const title = lang === "ja" ? l.titleJa : l.title;
   const desc = lang === "ja" ? l.descriptionJa : l.description;
+  const messagingLabel = l.messagingPlatform === "whatsapp" ? "WhatsApp" : "LINE";
 
   const unlock = () => {
     const targetMemberPath = mapPublicPathToMemberPath(location.pathname);
@@ -74,6 +75,13 @@ export function ListingDetailPublicScreen() {
         <div className="mb-3 rounded-xl border bg-card p-4">
           <h3 className="mb-1.5 text-xs font-bold text-foreground">{t("listing.about")}</h3>
           <p className="text-xs leading-relaxed text-muted-foreground">{desc}</p>
+        </div>
+
+        <div className="mb-3 rounded-xl border bg-card p-4">
+          <h3 className="mb-1.5 text-xs font-bold text-foreground">Messaging</h3>
+          <p className="text-xs text-muted-foreground">
+            Group chat is hosted on {messagingLabel} and unlocks after joining.
+          </p>
         </div>
 
         <div className="mt-3">

@@ -1,4 +1,4 @@
-import { Car, AlertTriangle, Plus, MessageCircle, ArrowRight } from "lucide-react";
+import { Car, AlertTriangle, Plus, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useI18n } from "@/modules/core/i18n";
 import { ScreenHint } from "@/modules/core/components/ScreenHint";
@@ -65,13 +65,6 @@ export function RideSharePoolScreen() {
                       className="rounded-md border border-border px-2.5 py-1 text-[11px] font-semibold text-foreground"
                     >
                       Open ride
-                    </button>
-                    <button
-                      onClick={() => navigate(`/screens/member/chat/${ride.id}`)}
-                      className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 text-[11px] font-semibold text-foreground"
-                    >
-                      <MessageCircle className="size-3.5" />
-                      Chat with driver
                     </button>
                   </div>
                 </div>

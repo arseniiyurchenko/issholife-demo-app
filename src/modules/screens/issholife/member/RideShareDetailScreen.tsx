@@ -21,10 +21,6 @@ export function RideShareDetailScreen() {
     requestRide(rideId);
   }
 
-  function handleChatWithDriver() {
-    navigate(`/screens/member/chat/${rideId}`);
-  }
-
   if (!ride) {
     return (
       <IsshoLifeLayout showToggle={false}>
@@ -130,13 +126,6 @@ export function RideShareDetailScreen() {
         >
           {hasRequestedRide ? "Request Sent" : "Request to Join"}
         </button>
-        <button
-          onClick={handleChatWithDriver}
-          className="mt-2 w-full rounded-xl border border-border bg-card py-3 text-sm font-semibold text-foreground"
-        >
-          Chat with driver
-        </button>
-
         <div className="mt-3 flex items-center gap-2 rounded-lg bg-muted p-3 text-[11px] text-muted-foreground">
           <AlertTriangle className="size-3.5 shrink-0" />
           {t("ride.costSplitOnly")}

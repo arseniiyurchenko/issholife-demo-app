@@ -12,12 +12,15 @@ interface Props {
 export function ListingCard({ listing, isJoined, onClick }: Props) {
   const { lang, t } = useI18n();
   const title = lang === "ja" ? listing.titleJa : listing.title;
-  const priceColorClass = listing.type === "tour" ? "text-[var(--il-tour)]" : "text-[var(--il-pro)]";
+  const isCommunityListing = listing.type === "community";
+  const borderAccentClass = isCommunityListing ? "border-l-[var(--il-accent)]" : "border-l-[var(--il-pro)]";
+  const providerLabel = lang === "ja" ? "主催" : "By";
+  const offerCtaLabel = lang === "ja" ? "オファーを見る" : "View offer";
 
   return (
     <div
       onClick={onClick}
-      className="mb-3 flex cursor-pointer overflow-hidden rounded-xl border bg-card shadow-sm transition-shadow hover:shadow-md"
+      className={`mb-3 flex cursor-pointer overflow-hidden rounded-xl border border-l-4 bg-card shadow-sm transition-shadow hover:shadow-md ${borderAccentClass}`}
     >
       <div
         className="w-28 shrink-0 bg-cover bg-center"
@@ -26,10 +29,8 @@ export function ListingCard({ listing, isJoined, onClick }: Props) {
       <div className="flex-1 p-3" style={{ minWidth: 0 }}>
         <div className="mb-1 flex items-center justify-between">
           <Badge type={listing.type} sub={listing.sub} />
-          {listing.price && (
-            <span className={`text-xs font-bold ${priceColorClass}`}>
-              {listing.price}
-            </span>
+          {!isCommunityListing && listing.price && (
+            <span className="text-xs font-bold text-[var(--il-pro)]">{listing.price}</span>
           )}
         </div>
         <h3 className="mb-1 truncate text-sm font-bold text-foreground">
@@ -47,13 +48,29 @@ export function ListingCard({ listing, isJoined, onClick }: Props) {
           <span>{listing.time}</span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-[11.5px] text-muted-foreground">
-            {listing.attendees}/{listing.maxAttendees} {t("join.goingCount")}
-          </span>
+          {isCommunityListing ? (
+            <span className="text-xs font-bold text-[var(--il-accent)]">
+              {listing.attendees}/{listing.maxAttendees} {t("join.goingCount")}
+            </span>
+          ) : (
+            <span className="text-[11.5px] text-muted-foreground">
+              {providerLabel} {listing.organizer}
+            </span>
+          )}
           {isJoined && (
             <span className="inline-flex items-center gap-1 rounded bg-[var(--il-going-bg)] px-2 py-0.5 text-[10px] font-bold text-[var(--il-going)]">
               <CheckCircle className="size-3" />
               {t("feed.going")}
+            </span>
+          )}
+          {!isJoined && isCommunityListing && (
+            <span className="rounded-full bg-[var(--il-accent-bg)] px-2 py-0.5 text-[10px] font-bold text-[var(--il-accent)]">
+              {t("join.joinEvent")}
+            </span>
+          )}
+          {!isCommunityListing && (
+            <span className="rounded-full bg-[var(--il-pro-bg)] px-2 py-0.5 text-[10px] font-bold text-[var(--il-pro)]">
+              {offerCtaLabel}
             </span>
           )}
         </div>
